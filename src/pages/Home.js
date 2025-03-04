@@ -9,13 +9,37 @@ const images = [
 
 function Home() {
   const [currentImage, setCurrentImage] = useState(0);
+  const [attendedDays, setAttendedDays] = useState("");
+  const [isAdmin, setIsAdmin] = useState(true); // Simulating admin login
+  const costPerDay = 145;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 3000); // Change image every 3 seconds
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  // Function to handle attendance input
+  const handleAttendanceChange = (e) => {
+    const value = e.target.value;
+    if (value === "" || (Number(value) >= 0 && Number(value) <= 30)) {
+      setAttendedDays(value);
+    } else {
+      alert("Attendance must be between 0 and 30 days.");
+    }
+  };
+
+  // Placeholder for payment integration
+  const handlePayment = () => {
+    if (attendedDays === "" || attendedDays < 0 || attendedDays > 30) {
+      alert("Please enter a valid attendance (0-30 days).");
+      return;
+    }
+    const amount = attendedDays * costPerDay;
+    alert(`Redirecting to payment for ₹${amount}`);
+    // Integrate payment gateway like Razorpay/Stripe here
+  };
 
   return (
     <div>
@@ -34,81 +58,50 @@ function Home() {
         </div>
       </div>
 
-      {/* Notifications & Forms Section */}
+      {/* Notification & Forms Section */}
       <div className="container mt-4">
         <div className="row">
-          {/* Notifications Section */}
           <div className="col-md-6">
             <h3>Notifications</h3>
-            <div className="scroll-box">
-              <div className="notification-card">
-                <span className="date-badge">2024-10-19</span>
-                <h5>Revised rules of CUSAT Hostels.</h5>
-                <a href="#">open</a>
-              </div>
-              <div className="notification-card">
-                <span className="date-badge">2024-07-09</span>
-                <h5>Hostel Allotment Instructions for PG First Year Students</h5>
-                <a href="#">open</a>
-              </div>
-              <div className="notification-card">
-                <span className="date-badge">2024-06-05</span>
-                <h5>New Admission Guidelines</h5>
-                <a href="#">open</a>
+            <div className="card">
+              <div className="card-body">
+                <p>Revised rules of CUSAT Hostels.</p>
+                <span className="text-danger">open</span>
               </div>
             </div>
           </div>
-
-          {/* Forms Section */}
           <div className="col-md-6">
             <h3>Forms</h3>
-            <div className="scroll-box">
-              <div className="form-card">
-                <h5>Form C</h5>
-                <a href="#">open</a>
-              </div>
-              <div className="form-card">
-                <h5>Late Entry Form</h5>
-                <a href="#">open</a>
-              </div>
-              <div className="form-card">
-                <h5>Room/Hostel Change</h5>
-                <a href="#">open</a>
+            <div className="card">
+              <div className="card-body">
+                <p>Late Entry Form</p>
+                <span className="text-danger">open</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Hostel Details */}
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Boys' Hostel</h5>
-                <p className="card-text">Facilities: Wi-Fi, Mess, Laundry</p>
-              </div>
-            </div>
+      {/* Admin Attendance Section */}
+      {isAdmin && (
+        <div className="container mt-4">
+          <h3>Administrator Attendance Management</h3>
+          <div className="mb-3">
+            <label className="form-label"><strong>Enter Days Attended (0-30):</strong></label>
+            <input
+              type="number"
+              className="form-control"
+              value={attendedDays}
+              onChange={handleAttendanceChange}
+              min="0"
+              max="30"
+            />
           </div>
-          <div className="col-md-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Girls' Hostel</h5>
-                <p className="card-text">Facilities: Wi-Fi, Security, Common Room</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Guest House</h5>
-                <p className="card-text">For visitors and parents</p>
-              </div>
-            </div>
-          </div>
+          <button className="btn btn-success" onClick={handlePayment}>
+            Pay Fees (₹{attendedDays * costPerDay || 0})
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }

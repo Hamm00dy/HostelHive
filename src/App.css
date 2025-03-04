@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+.scrolling-text {
+  background-color: orange;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+  opacity: 0;
+}
+

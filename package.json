@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "hostelhive",
   "version": "0.1.0",
   "private": true,
@@ -37,5 +38,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+=======
+  "dependencies": {
+    "bcrypt": "^5.1.1"
+>>>>>>> c60162d (commit)
   }
 }

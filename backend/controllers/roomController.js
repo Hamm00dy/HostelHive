@@ -52,5 +52,4 @@ const assignStudentToRoom = async (studentId, roomNo) => {
     throw error;
   }
 };
-
 module.exports = { getAllRooms, assignStudentToRoom };

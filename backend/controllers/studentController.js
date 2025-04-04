@@ -111,7 +111,41 @@ const getRoomsWithStudents = async (req, res) => {
   }
 };
 
-module.exports = { registerStudent, getStudents, updateAttendance, updateMessFee, getRoomsWithStudents };
+// Delete Student by Roll No
+const deleteStudent = async (req, res) => {
+  const { rollNo } = req.params;
+
+  if (!rollNo) {
+    return res.status(400).json({ message: "Student Roll No is required" });
+  }
+
+  try {
+    // First get the student to return their details after deletion
+    const [student] = await db.query("SELECT * FROM students WHERE rollNo = ?", [rollNo]);
+    console.log("entered")
+    if (student.length === 0) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Delete the student
+    const [result] = await db.query("DELETE FROM students WHERE rollNo = ?", [rollNo]);
+
+    if (result.affectedRows === 0) {
+      return res.status(500).json({ message: "Failed to delete student" });
+    }
+
+    res.status(200).json({ 
+      message: "Student deleted successfully", 
+      deletedStudent: student[0] 
+    });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    res.status(500).json({ message: "Failed to delete student" });
+  }
+};
+
+
+module.exports = { registerStudent, getStudents, updateAttendance, updateMessFee, getRoomsWithStudents, deleteStudent };
 
 
 // module.exports = { registerStudent, getStudents, updateAttendance, updateMessFee };

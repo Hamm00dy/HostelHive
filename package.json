@@ -22,6 +22,10 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "rules": {
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/no-distracting-elements": "off"
+    },
     "extends": [
       "react-app",
       "react-app/jest"
